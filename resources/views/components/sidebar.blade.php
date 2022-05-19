@@ -1,23 +1,36 @@
 @php
 $links = [
-    [
-        "href" => "dashboard",
-        "text" => "Dashboard",
-        "is_multi" => false,
-    ],
-    [
-        "href" => [
-            [
-                "section_text" => "User",
-                "section_list" => [
-                    ["href" => "user", "text" => "Data User"],
-                    ["href" => "user.new", "text" => "Buat User"]
-                ]
-            ]
-        ],
-        "text" => "User",
-        "is_multi" => true,
-    ],
+[
+"href" => "dashboard",
+"text" => "Dashboard",
+"is_multi" => false,
+],
+[
+"href" => [
+[
+"section_text" => "User",
+"section_list" => [
+["href" => "user", "text" => "Data User"],
+["href" => "user.new", "text" => "Buat User"]
+]
+]
+],
+"text" => "User",
+"is_multi" => true,
+],
+[
+"href" => [
+[
+"section_text" => "Car",
+"section_list" => [
+["href" => "user", "text" => "Create"],
+["href" => "car.index", "text" => "All"]
+]
+]
+],
+"text" => "Car",
+"is_multi" => true,
+],
 ];
 $navigation_links = array_to_object($links);
 @endphp
@@ -25,41 +38,41 @@ $navigation_links = array_to_object($links);
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('dashboard') }}">Dashboard</a>
+            <a href="{{ route('dashboard') }}">{{__('CS Energy')}}</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('dashboard') }}">
-                <img class="d-inline-block" width="32px" height="30.61px" src="" alt="">
+                <img class="d-inline-block" width="32px" height="30.61px" src="{{asset('icons')}}/CSE.svg" alt="">
             </a>
         </div>
-        @foreach ($navigation_links as $link)
+
         <ul class="sidebar-menu">
-            <li class="menu-header">{{ $link->text }}</li>
-            @if (!$link->is_multi)
-            <li class="{{ Request::routeIs($link->href) ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route($link->href) }}"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+            <li class="menu-header">{{__('Menu')}}</li>
+
+            <li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-fire"></i><span>{{__('Dashboard')}}</span></a>
             </li>
-            @else
-                @foreach ($link->href as $section)
-                    @php
-                    $routes = collect($section->section_list)->map(function ($child) {
-                        return Request::routeIs($child->href);
-                    })->toArray();
 
-                    $is_active = in_array(true, $routes);
-                    @endphp
+            <li class="dropdown {{ Request::routeIs('car.index') || Request::routeIs('car.create') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-clipboard"></i> <span>{{__('Information Management')}}</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ Request::routeIs('car.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('car.index') }}">{{__('Car Management')}}</a></li>
+                    <li class="{{ Request::routeIs('division.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('division.index') }}">{{__('Division Management')}}</a></li>
+                    <li class="{{ Request::routeIs('driver.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('driver.index') }}">{{__('Driver Management')}}</a></li>
+                </ul>
+            </li>
 
-                    <li class="dropdown {{ ($is_active) ? 'active' : '' }}">
-                        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-chart-bar"></i> <span>{{ $section->section_text }}</span></a>
-                        <ul class="dropdown-menu">
-                            @foreach ($section->section_list as $child)
-                                <li class="{{ Request::routeIs($child->href) ? 'active' : '' }}"><a class="nav-link" href="{{ route($child->href) }}">{{ $child->text }}</a></li>
-                            @endforeach
-                        </ul>
-                    </li>
-                @endforeach
-            @endif
+            <li class="dropdown {{ Request::routeIs('division.index') ? 'active' : '' }}">
+                <a href="{{route('division.index')}}" class="nav-link has-dropdown"><i class="fas fa-cogs"></i> <span>{{__('Preventive Management')}}</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ Request::routeIs('car.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('car.index') }}">{{__('Maintenance')}}</a></li>
+                    <li class="{{ Request::routeIs('division.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('division.index') }}">{{__('Preventive')}}</a></li>
+                    <li class="{{ Request::routeIs('division.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('division.index') }}">{{__('Accident')}}</a></li>
+                    <li class="{{ Request::routeIs('division.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('division.index') }}">{{__('Re Fuel')}}</a></li>
+                </ul>
+            </li>
+
         </ul>
-        @endforeach
+
     </aside>
 </div>
