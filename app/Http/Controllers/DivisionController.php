@@ -186,4 +186,11 @@ class DivisionController extends Controller
         toastr()->success(__("Remove"), __("Success"), ['timeOut' => 2000]);
         return redirect(route('division.index'));
     }
+
+    public function getdivision(){
+
+            $division = Division::orderBy('created_at','desc')->get();
+    
+            return response()->json($division,200);
+    }
 }

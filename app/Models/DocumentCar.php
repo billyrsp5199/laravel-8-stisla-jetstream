@@ -16,15 +16,17 @@ class DocumentCar extends Model
         'register_expire',
         'yellowbook_expire',
         'driver_id',
+        'insurance_exp',
+        'tax_road_date',
         'remark',
         'updated_by'
     ];
 
     public function carID(){
-        $this->belongsTo(Car::class,'car_id');
+       return $this->belongsTo(Car::class,'car_id');
     }
 
     public function driverID(){
-        $this->belongsTo(Driver::class,'driver_id');
+        return $this->belongsTo(Driver::class,'driver_id');
     }
 }

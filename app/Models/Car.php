@@ -17,21 +17,26 @@ class Car extends Model
         'engine_number',
         'power_cc',
         'date_start_usage',
-        'driver_id',
+        'assign_id',
         'division_id',
         'condition',
-        'status'
+        'status',
+        'photo_path'
     ];
 
     public function docID(){
         return $this->hasMany(DocumentCar::class,'car_id','id');
     }
 
-    public function driverID(){
-        return $this->belongsTo(Driver::class,'driver_id');
-    }
+    // public function driverID(){
+    //     return $this->belongsTo(Driver::class,'driver_id');
+    // }
 
     public function divisionID(){
         return $this->belongsTo(Division::class,'division_id');
+    }
+
+    public function assignID(){
+        return $this->belongsTo(AssignTo::class,'assign_id');
     }
 }

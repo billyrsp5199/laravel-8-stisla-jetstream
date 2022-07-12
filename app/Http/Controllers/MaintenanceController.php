@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
+use App\Models\Driver;
+use App\Models\Maintenances;
+use App\Models\Maintenances_item_list;
 use Illuminate\Http\Request;
 
 class MaintenanceController extends Controller
@@ -13,7 +17,9 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
-        //
+        $main = Maintenances::all();
+        
+        return view('maintenance.index',compact(['main']));
     }
 
     /**
@@ -23,7 +29,9 @@ class MaintenanceController extends Controller
      */
     public function create()
     {
-        //
+        $car = Car::all();
+        $driver = Driver::all();
+        return view('maintenance.create',compact(['car','driver']));
     }
 
     /**
@@ -34,7 +42,7 @@ class MaintenanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -80,5 +88,16 @@ class MaintenanceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function additemview()
+    {
+        return view('modal.additem');
+    }
+
+    public function getitem(){
+        $item = Maintenances_item_list::orderBy("created_at", "desc")->get();
+
+        return response()->json($item,200);
     }
 }

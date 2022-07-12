@@ -17,3 +17,6 @@ mix.js('resources/js/app.js', 'public/js')
         require('postcss-import'),
         require('tailwindcss'),
     ]);
+
+mix.js('resources/js/cancelconfirm.js','public/js');
+mix.js('resources/js/bootstrap.bundle.min.js','public/js');

@@ -18,20 +18,21 @@ class Driver extends Model
         'license_issue_date',
         'license_expire_date',
         'attached',
+        'profile_path',
         'division_id',
         'created_by',
         'status'
     ];
 
     public function userID(){
-        $this->belongsTo(User::class,'user_id');
+       return $this->belongsTo(User::class,'user_id');
     }
 
     public function divisionID(){
-        $this->belongsTo(Division::class,'division_id');
+        return $this->belongsTo(Division::class,'division_id');
     }
 
     public function createdBy(){
-        $this->belongsTo(User::class,'created_by');
+       return $this->belongsTo(User::class,'created_by');
     }
 }

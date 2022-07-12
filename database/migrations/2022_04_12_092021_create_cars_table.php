@@ -21,10 +21,11 @@ class CreateCarsTable extends Migration
             $table->string('engine_number',125);
             $table->integer('power_cc');
             $table->date('date_start_usage');
-            $table->integer('driver_id');
+            $table->integer('assign_id')->nullable();
             $table->integer('division_id')->nullable();
             $table->string('condition',20);
             $table->integer('status');
+            $table->string('photo_path',250);
             $table->timestamps();
         });
     }

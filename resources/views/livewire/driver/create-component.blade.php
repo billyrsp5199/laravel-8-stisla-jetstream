@@ -41,13 +41,13 @@
                                     </div>
 
                                     <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
-                                        <form action="" method="post" autocomplete="off" enctype="multipart/form-data">
+                                        <form action="{{route('driver.store')}}" method="post" autocomplete="off" enctype="multipart/form-data">
                                             @csrf
                                             @method('POST')
                                             <fieldset>
 
                                                 <div class="row">
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <label class="form-control-label" for="avatar">{{__("Profile Photo")}}
                                                         </label>
                                                         <div class="form-group{{ $errors->has('avatar') ? ' has-danger' : '' }}">
@@ -59,6 +59,19 @@
                                                             @if ($errors->has('avatar'))
                                                             <span class="invalid-feedback" role="alert" style="display: block">
                                                                 <strong>{{ $errors->first('avatar') }}</strong>
+                                                            </span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                       <label class="form-control-label" for="phone">{{__("Phone Number")}}
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        <div class="form-group{{ $errors->has('phone') ? ' has-danger' : '' }}">
+                                                            <input type="text" name="phone" id="phone" maxlength="10" class="form-control form-control-alternative{{ $errors->has('phone') ? ' is-invalid' : '' }}" placeholder="{{ __('20xxxxxxxx') }}" value="{{ old('phone') }}" required autofocus>
+                                                            @if ($errors->has('phone'))
+                                                            <span class="invalid-feedback" role="alert" style="display: block">
+                                                                <strong>{{ $errors->first('phone') }}</strong>
                                                             </span>
                                                             @endif
                                                         </div>
@@ -102,7 +115,7 @@
                                                         <label class="form-control-label" for="license_issue_date">{{__("License Issue Date")}}<span class="text-danger">*</span>
                                                         </label>
                                                         <div class="input-group input-group-alternative mb-3">
-                                                            <input type="text" name="license_issue_date" id="license_issue_date" class="form-control form-control-alternative{{ $errors->has('license_issue_date') ? ' is-invalid' : '' }}" placeholder="{{ __('License Issue Date') }}" value="{{ old('license_issue_date') }}" required autofocus>
+                                                            <input type="text" name="license_issue_date" id="license_issue_date" data-toggle="datepicker-license-issue" class="form-control form-control-alternative{{ $errors->has('license_issue_date') ? ' is-invalid' : '' }}" placeholder="{{ __('License Issue Date') }}" value="{{ old('license_issue_date') }}" required autofocus>
                                                             @if ($errors->has('license_issue_date'))
                                                             <span class="invalid-feedback" role="alert" style="display: block">
                                                                 <strong>{{ $errors->first('license_issue_date') }}</strong>
@@ -114,7 +127,7 @@
                                                         <label class="form-control-label" for="license_exp_date">{{__("license Expire Date")}}<span class="text-danger">*</span>
                                                         </label>
                                                         <div class="input-group input-group-alternative mb-3">
-                                                            <input type="text" name="license_exp_date" id="license_exp_date" class="form-control form-control-alternative{{ $errors->has('license_exp_date') ? ' is-invalid' : '' }}" placeholder="{{ __('License Expire Date') }}" value="{{ old('license_exp_date') }}" required autofocus>
+                                                            <input type="text" name="license_exp_date" id="license_exp_date"  data-toggle="datepicker-license-exp" class="form-control form-control-alternative{{ $errors->has('license_exp_date') ? ' is-invalid' : '' }}" placeholder="{{ __('License Expire Date') }}" value="{{ old('license_exp_date') }}" required autofocus>
                                                             @if ($errors->has('license_exp_date'))
                                                             <span class="invalid-feedback" role="alert" style="display: block">
                                                                 <strong>{{ $errors->first('license_exp_date') }}</strong>
@@ -124,11 +137,11 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label class="form-control-label" for="attached">{{__("Attached")}}
+                                                        <label class="form-control-label" for="attached">{{__("Attached")}} ({{__("Accept Only PDF")}})
                                                         </label>
                                                         <div class="form-group{{ $errors->has('attached') ? ' has-danger' : '' }}">
                                                             <div class="custom-file">
-                                                                <input type="file" name="attached" class="custom-file-input" id="avatar" accept="image/*">
+                                                                <input type="file" name="attached" class="custom-file-input" id="avatar" accept="application/pdf">
                                                                 <label class="custom-file-label" for="attached">@lang('Select File')</label>
                                                                 <span class="text-danger" id="nameFileAttached"></span>
                                                             </div>
@@ -152,6 +165,15 @@
                                                             <select class="form-control form-control-alternative show-tick 
                                                         {{ $errors->has('division_id') ? '  is-invalid has-danger' : '' }}" id="division_id" name="division_id" required data-style="btn-outline-secondary" data-live-search="false">
                                                                 <option value="" disabled selected>{{__("Select Division")}}</option>
+                                                                @foreach($division as $row)
+                                                                <option value="{{$row->id}}">
+                                                                    @if(session('locale') === 'en')
+                                                                    {{$row->division_eng}}
+                                                                    @elseif(session('locale') === 'la')
+                                                                    {{$row->division_la}}
+                                                                    @endif
+                                                                </option>
+                                                                @endforeach
                                                             </select>
                                                             @if ($errors->has('division_id'))
                                                             <span class="invalid-feedback" role="alert" style="display: block">
@@ -256,7 +278,9 @@
 @endpush
 
 @push('scripts')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
+<script src="/assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 <script>
     $(document).ready(function() {
         $.ajaxSetup({
@@ -264,6 +288,22 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        var today = new Date();
+        var sdate = today.getDate() + '/' + today.getMonth() + '/' + (today.getFullYear() - 5);
+        var edate = today.getDate() + '/' + today.getMonth() + '/' + (today.getFullYear() + 10);
+        $('[ data-toggle="datepicker-license-issue"]').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: sdate,
+            endDate: edate
+        });
+        $('[ data-toggle="datepicker-license-exp"]').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: sdate,
+            endDate: edate
+        });
+        $('[data-toggle="datepicker-license-issue"]').datepicker("refresh");
+        $('[data-toggle="datepicker-license-exp"]').datepicker("refresh");
 
         $("#avatar").change(function() {
             let avatar = document.getElementById("avatar");

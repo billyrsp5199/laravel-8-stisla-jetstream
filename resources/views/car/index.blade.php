@@ -42,6 +42,7 @@
                                         <th width="">{{__("Assign to")}}</th>
                                         <th width="">{{__("Condition")}}</th>
                                         <th width="">{{__("Last Update")}}</th>
+                                        <th width="">{{__("Document")}}</th>
                                         <th width="">{{__("Action")}}</th>
                                     </tr>
                                 </thead>
@@ -64,13 +65,18 @@
                                         </td>
                                         <td>
                                             @if(session('locale') === 'en')
-                                            {{$row->driverID->fullname_eng}}
+                                            {{$row->assignID->fullname_eng}}
                                             @elseif(session('locale') === 'la')
-                                            {{$row->driverID->fullname_la}}
+                                            {{$row->assignID->fullname_la}}
                                             @endif
                                         </td>
                                         <td>{{$row->condition}}</td>
                                         <td>{{$row->updated_at}}</td>
+                                        <td>
+                                            <a class='btn btn-primary' href="{{route('documentcar.show',$row->id)}}">
+                                                {{__("Document")}}
+                                            </a>
+                                        </td>
                                         <td>
                                             <a class='btn btn-primary' href="{{route('car.edit',$row->id)}}">
                                                 {{__("Edit")}}

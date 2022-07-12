@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AssignToController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\DocumentCarController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,8 +40,17 @@ Route::group([ "middleware" => ['auth'] ], function() {
 
     Route::resource('division',DivisionController::class);
     Route::post('divisions/render',[DivisionController::class,'render'])->name('divisions.render');
+    Route::post('divisions/get',[DivisionController::class,'getdivision'])->name('division.get');
+
 
     Route::resource('driver',DriverController::class);
+    Route::post('drivers/get',[DriverController::class,'getDriver'])->name('driver.get');
+
+    Route::resource('assignto',AssignToController::class);
+
+    Route::resource('maintenance',MaintenanceController::class);
+    Route::get('maintenances/additem',[MaintenanceController::class,'additemview'])->name('additem.view');
+    Route::post('maintenances/item',[MaintenanceController::class,'getitem'])->name('item.get');
 
     Route::get('/user', [ UserController::class, "index_view" ])->name('user');
     Route::view('/user/new', "pages.user.user-new")->name('user.new');

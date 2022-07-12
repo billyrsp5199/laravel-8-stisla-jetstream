@@ -22,8 +22,10 @@ class CreateDriversTable extends Migration
             $table->date('license_issue_date');
             $table->date('license_expire_date');
             $table->string('attached',150);
+            $table->string('profile_path',150);
             $table->integer('division_id');
             $table->integer('created_by');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

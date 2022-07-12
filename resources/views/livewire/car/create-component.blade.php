@@ -1,3 +1,66 @@
+@push('styles')
+
+<style>
+    .picture-container {
+        position: relative;
+        /* cursor: pointer; */
+        text-align: center;
+    }
+
+    .picture {
+        width: 106px;
+        height: 106px;
+        background-color: #999999;
+        border: 4px solid #CCCCCC;
+        color: #FFFFFF;
+        border-radius: 50%;
+        margin: 0px auto;
+        overflow: hidden;
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+    }
+
+    .picture:hover {
+        border-color: #2ca8ff;
+    }
+
+    .content.ct-wizard-green .picture:hover {
+        border-color: #05ae0e;
+    }
+
+    .content.ct-wizard-blue .picture:hover {
+        border-color: #3472f7;
+    }
+
+    .content.ct-wizard-orange .picture:hover {
+        border-color: #ff9500;
+    }
+
+    .content.ct-wizard-red .picture:hover {
+        border-color: #ff3b30;
+    }
+
+    .picture input[type="file"] {
+        cursor: pointer;
+        display: block;
+        height: 100%;
+        left: 0;
+        opacity: 0 !important;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    .picture-src {
+        width: 100%;
+    }
+
+    #avatar {
+        cursor: pointer;
+    }
+</style>
+@endpush
+
 <div>
     <div class="container-fluid mt--7">
         <div class="row">
@@ -41,7 +104,7 @@
                                     </div>
 
                                     <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
-                                        <form action="" method="post" autocomplete="off" enctype="multipart/form-data">
+                                        <form action="{{route('car.store')}}" method="post" autocomplete="off" enctype="multipart/form-data">
                                             @csrf
                                             @method('POST')
                                             <fieldset>
@@ -84,10 +147,10 @@
                                                         <label class="form-control-label" for="plate_number">{{__("Plate Number")}}<span class="text-danger">*</span>
                                                         </label>
                                                         <div class="input-group input-group-alternative mb-3">
-                                                            <input type="text" name="vehicle" id="input-vehicle" class="form-control form-control-alternative{{ $errors->has('vehicle') ? ' is-invalid' : '' }}" placeholder="{{ __('Plate Number') }}" value="{{ old('vehicle') }}" required autofocus>
-                                                            @if ($errors->has('vehicle'))
+                                                            <input type="text" name="plate_number" id="plate_number" class="form-control form-control-alternative{{ $errors->has('plate_number') ? ' is-invalid' : '' }}" placeholder="{{ __('Plate Number') }}" value="{{ old('plate_number') }}" required autofocus>
+                                                            @if ($errors->has('plate_number'))
                                                             <span class="invalid-feedback" role="alert" style="display: block">
-                                                                <strong>{{ $errors->first('vehicle') }}</strong>
+                                                                <strong>{{ $errors->first('plate_number') }}</strong>
                                                             </span>
                                                             @endif
                                                         </div>
@@ -159,23 +222,36 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label class="form-control-label" for="driver_id">{{__('Driver')}}
+                                                        <label class="form-control-label" for="driver_id">{{__('Assign To')}}
                                                             <span class="text-danger">*</span>
                                                         </label>
+
                                                         <div class="input-group input-group-alternative mb-3">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text"><i class="far fa-address-card"></i></span>
+                                                                <span class="input-group-text"><i class="fas fa-address-card"></i></span>
                                                             </div>
                                                             <select class="form-control form-control-alternative show-tick 
-                                                        {{ $errors->has('driver_id') ? '  is-invalid has-danger' : '' }}" id="driver_id" name="driver_id" required data-style="btn-outline-secondary" data-live-search="false">
-                                                                <option value="" disabled selected>{{__("Select Driver")}}</option>
+                                                                    {{ $errors->has('assign_to') ? '  is-invalid has-danger' : '' }}" id="assign_to" name="assign_to" required data-style="btn-outline-secondary" data-live-search="false">
+                                                                <option value="" selected disabled>{{__("Select Assign")}}</option>
+                                                                @foreach($assign as $row)
+                                                                <option value="{{$row->id}}">
+                                                                    @if(session('locale') === 'en')
+                                                                    {{$row->fulllname_eng}}
+                                                                    @elseif(session('locale') === 'la')
+                                                                    {{$row->fullname_la}}
+                                                                    @endif
+                                                                </option>
+                                                                @endforeach
                                                             </select>
-                                                            @if ($errors->has('driver_id'))
+
+                                                            @if ($errors->has('assign_to'))
                                                             <span class="invalid-feedback" role="alert" style="display: block">
-                                                                <strong>{{ $errors->first('driver_id') }}</strong>
+                                                                <strong>{{ $errors->first('assign_to') }}</strong>
                                                             </span>
                                                             @endif
                                                         </div>
+
+
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-control-label" for="division_id">{{__('Division')}}
@@ -187,7 +263,16 @@
                                                             </div>
                                                             <select class="form-control form-control-alternative show-tick 
                                                         {{ $errors->has('division_id') ? '  is-invalid has-danger' : '' }}" id="division_id" name="division_id" required data-style="btn-outline-secondary" data-live-search="false">
-                                                                <option value="" disabled selected>{{__("Select Division")}}</option>
+                                                                <option value selected disabled>{{__("Select Division")}}</option>
+                                                                @foreach($division as $row)
+                                                                <option value="{{$row->id}}">
+                                                                    @if(session('locale') === 'en')
+                                                                    {{$row->division_eng}}
+                                                                    @elseif(session('locale') === 'la')
+                                                                    {{$row->division_la}}
+                                                                    @endif
+                                                                </option>
+                                                                @endforeach
                                                             </select>
                                                             @if ($errors->has('division_id'))
                                                             <span class="invalid-feedback" role="alert" style="display: block">
@@ -203,8 +288,15 @@
                                                             <span class="text-danger">*</span>
                                                         </label>
                                                         <div class="form-group{{ $errors->has('condition') ? ' has-danger' : '' }}">
-                                                            <input type="text" name="condition" id="condition" class="form-control form-control-alternative{{ $errors->has('condition') ? ' is-invalid' : '' }}" placeholder="{{ __('Condition') }}" value="{{ old('condition') }}">
+                                                            <select class="form-control form-control-alternative show-tick 
+                                                        {{ $errors->has('condition') ? '  is-invalid has-danger' : '' }}" id="condition" name="condition" required data-style="btn-outline-secondary" data-live-search="false">
+                                                                <option value selected disabled>{{__("Select Status")}}</option>
+                                                                <option value="1">{{__('Available')}}</option>
+                                                                <option value="2">{{__('Not Available')}}</option>
+                                                                <option value="3">{{__('On Maintainence')}}</option>
 
+
+                                                            </select>
                                                             @if ($errors->has('condition'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('condition') }}</strong>
@@ -217,8 +309,15 @@
                                                             <span class="text-danger">*</span>
                                                         </label>
                                                         <div class="form-group{{ $errors->has('status') ? ' has-danger' : '' }}">
-                                                            <input type="text" name="status" id="status" class="form-control form-control-alternative{{ $errors->has('status') ? ' is-invalid' : '' }}" placeholder="{{ __('Status') }}" value="{{ old('status') }}">
+                                                            <select class="form-control form-control-alternative show-tick 
+                                                        {{ $errors->has('status') ? '  is-invalid has-danger' : '' }}" id="status" name="status" required data-style="btn-outline-secondary" data-live-search="false">
+                                                                <option value selected disabled>{{__("Select Status")}}</option>
+                                                                <option value="1">{{__('Available')}}</option>
+                                                                <option value="2">{{__('Not Available')}}</option>
+                                                                <option value="3">{{__('On Maintainence')}}</option>
 
+
+                                                            </select>
                                                             @if ($errors->has('status'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('status') }}</strong>
@@ -226,8 +325,6 @@
                                                             @endif
                                                         </div>
                                                     </div>
-
-
                                             </fieldset>
                                             <hr>
                                             <br>
@@ -257,70 +354,13 @@
 @push('styles')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
-
-<style>
-    .picture-container {
-        position: relative;
-        /* cursor: pointer; */
-        text-align: center;
-    }
-
-    .picture {
-        width: 106px;
-        height: 106px;
-        background-color: #999999;
-        border: 4px solid #CCCCCC;
-        color: #FFFFFF;
-        border-radius: 50%;
-        margin: 0px auto;
-        overflow: hidden;
-        transition: all 0.2s;
-        -webkit-transition: all 0.2s;
-    }
-
-    .picture:hover {
-        border-color: #2ca8ff;
-    }
-
-    .content.ct-wizard-green .picture:hover {
-        border-color: #05ae0e;
-    }
-
-    .content.ct-wizard-blue .picture:hover {
-        border-color: #3472f7;
-    }
-
-    .content.ct-wizard-orange .picture:hover {
-        border-color: #ff9500;
-    }
-
-    .content.ct-wizard-red .picture:hover {
-        border-color: #ff3b30;
-    }
-
-    .picture input[type="file"] {
-        cursor: pointer;
-        display: block;
-        height: 100%;
-        left: 0;
-        opacity: 0 !important;
-        position: absolute;
-        top: 0;
-        width: 100%;
-    }
-
-    .picture-src {
-        width: 100%;
-    }
-
-    #avatar {
-        cursor: pointer;
-    }
-</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 @endpush
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
+<script src="/assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -329,6 +369,26 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        // getdriver('#driver_id', '{{old("driver_id")}}');
+        // getdivision('#division_id', '{{old("division_id")}}');
+
+        var today = new Date();
+        var sdate = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+        var edate = (today.getDate() + 30) + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+        $('[data-toggle="datepicker"]').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: sdate,
+            endDate: edate
+        });
+
+        $('[data-toggle="datepicker-date"]').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: sdate,
+            endDate: edate
+        });
+        $('[data-toggle="datepicker"]').datepicker("refresh");
+        $('[data-toggle="datepicker-date"]').datepicker("refresh");
 
         $("#avatar").change(function() {
             let avatar = document.getElementById("avatar");
@@ -354,6 +414,55 @@
         });
 
     });
+
+    function getdriver(d_id, d_old_id) {
+        $.ajax({
+            type: 'POST',
+            url: "{{route('driver.get')}}",
+            data: {},
+            success: function(data) {
+                let options = `<option value selected disabled>{{__("Select Driver")}}</option>`;
+
+                $.each(data, function(index, value) {
+                    let html = "";
+                    let fullname_lang = '{{session("locale")}}' === 'en' ? value.fullname_eng : value.fullname_la;
+                    if (parseInt(d_old_id) === parseInt(value.id)) {
+                        html = "selected";
+                    }
+                    options += `<option value="${value.id}" ${html}>${fullname_lang}</option>`;
+                });
+                $(d_id).html(options)
+                $(d_id).selectpicker('refresh')
+
+            }
+
+        });
+    }
+
+    function getdivision(d_id, d_old_id) {
+        $.ajax({
+            type: 'POST',
+            url: "{{route('division.get')}}",
+            data: {},
+            success: function(data) {
+                let options = `<option value selected disabled>{{__("Select Division")}}</option>`;
+
+                $.each(data, function(index, value) {
+                    let html = "";
+                    let lang = '{{session("locale")}}' === 'en' ? value.division_eng : value.division_la;
+                    console.log(lang);
+                    if (parseInt(d_old_id) === parseInt(value.id)) {
+                        html = "selected";
+                    }
+                    options += `<option value="${value.id}" ${html}>${value.division_eng}</option>`;
+                });
+                $(d_id).html(options)
+                $(d_id).selectpicker('refresh')
+
+            }
+
+        });
+    }
 
     function readURL(input) {
         if (input.files && input.files[0]) {

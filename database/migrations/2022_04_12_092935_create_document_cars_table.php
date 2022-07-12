@@ -19,8 +19,10 @@ class CreateDocumentCarsTable extends Migration
             $table->date('technical_inspection_expire');
             $table->date('register_expire');
             $table->date('yellowbook_expire');
-            $table->integer('driver_id');
-            $table->string('remark',100);
+            $table->integer('driver_id')->nullable();
+            $table->date('insurance_exp');
+            $table->date('tax_road_date');
+            $table->string('remark',100)->nullable();
             $table->integer('updated_by');
             $table->timestamps();
         });

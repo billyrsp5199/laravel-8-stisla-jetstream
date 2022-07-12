@@ -8,7 +8,7 @@ $user = auth()->user();
         <ul class="navbar-nav mr-3">
             <li><a href="#" data-turbolinks="false" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
         </ul>
-        <h1 class="font-weight-bold text-2xl text-white">{{__('Car-Manangement') }}</h1>
+        <h1 class="font-weight-bold text-2xl text-white">{{__('Fleet-Manangement') }}</h1>
     </form>
     <ul class="navbar-nav navbar-right">
     <li class="nav-link nav-link-lg"><label class="">{{__('Lao')}} </label> <label data-toggle="checkbox-toggle"><input type="checkbox" id="toggle-lang" {{session('locale') === 'en' ? 'checked':''}}/></label><label class=""> {{__('English')}}</label></li>

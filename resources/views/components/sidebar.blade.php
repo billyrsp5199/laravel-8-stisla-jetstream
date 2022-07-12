@@ -58,14 +58,16 @@ $navigation_links = array_to_object($links);
                 <ul class="dropdown-menu">
                     <li class="{{ Request::routeIs('car.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('car.index') }}">{{__('Car Management')}}</a></li>
                     <li class="{{ Request::routeIs('division.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('division.index') }}">{{__('Division Management')}}</a></li>
+                    <li class="{{ Request::routeIs('assignto.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('assignto.index') }}">{{__('Assign To Management')}}</a></li>
                     <li class="{{ Request::routeIs('driver.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('driver.index') }}">{{__('Driver Management')}}</a></li>
+                    
                 </ul>
             </li>
 
             <li class="dropdown {{ Request::routeIs('division.index') ? 'active' : '' }}">
                 <a href="{{route('division.index')}}" class="nav-link has-dropdown"><i class="fas fa-cogs"></i> <span>{{__('Preventive Management')}}</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Request::routeIs('car.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('car.index') }}">{{__('Maintenance')}}</a></li>
+                    <li class="{{ Request::routeIs('maintenance.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('maintenance.index') }}">{{__('Maintenance')}}</a></li>
                     <li class="{{ Request::routeIs('division.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('division.index') }}">{{__('Preventive')}}</a></li>
                     <li class="{{ Request::routeIs('division.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('division.index') }}">{{__('Accident')}}</a></li>
                     <li class="{{ Request::routeIs('division.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('division.index') }}">{{__('Re Fuel')}}</a></li>
